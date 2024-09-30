@@ -100,7 +100,7 @@ int main() {
                         vendacripto(&useratual, &cotacoes);
                         salvauser(usuarios, numusers); 
                     } else if (respuser == 4) {
-                        // extrato(&useratual);
+                        extrato(&useratual);
                     } else if (respuser == 5) {
                         saque(&useratual);
                         salvauser(usuarios, numusers);

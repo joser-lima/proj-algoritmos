@@ -46,6 +46,8 @@ void compracripto(Usuario *usuario, Cotacoes *cotacoes);
 void vendacripto(Usuario *usuario, Cotacoes *cotacoes);
 void cotacao(Cotacoes *cotacoes);
 void saldo(Usuario *usuario);
+void extrato(Usuario *usuario);
+void salvaextrato(Usuario *usuario);
 float calctax(float valor, float taxa);
 void hora(char *date);
 void salvauser(Usuario usuarios[], int numusers);
@@ -235,6 +237,49 @@ void compracripto(Usuario *usuario, Cotacoes *cotacoes) {
     }
 }
 
+void vendacripto(Usuario *usuario, Cotacoes *cotacoes) {
+    int respmoeda;
+    float valor;
+    printf("\n1. Vender Bitcoin\n2. Vender Ethereum\n3. Vender Ripple\nEscolha uma opção: ");
+    scanf("%d", &respmoeda);
+
+    printf("Digite a quantidade a ser vendida: ");
+    scanf("%f", &valor);
+
+    float taxa;
+    if (respmoeda == 1) {
+        taxa = 0.02;
+        if (usuario->saldobit < valor) {
+            printf("Saldo insuficiente de BTC!\n");
+            return;
+        }
+        usuario->saldobit -= valor;
+        usuario->saldoreal += valor * cotacoes->valorbit * (1 - taxa);
+        salvatrans(usuario, "Venda de Bitcoin", valor * cotacoes->valorbit, valor * cotacoes->valorbit * taxa);
+        printf("Venda de Bitcoin realizada! Saldo de BTC: %.6f\n", usuario->saldobit);
+    } else if (respmoeda == 2) {
+        taxa = 0.02;
+        if (usuario->saldoeth < valor) {
+            printf("Saldo insuficiente de ETH!\n");
+            return;
+        }
+        usuario->saldoeth -= valor;
+        usuario->saldoreal += valor * cotacoes->valoreht * (1 - taxa);
+        salvatrans(usuario, "Venda de Ethereum", valor * cotacoes->valoreht, valor * cotacoes->valoreht * taxa);
+        printf("Venda de Ethereum realizada! Saldo de ETH: %.6f\n", usuario->saldoeth);
+    } else if (respmoeda == 3) {
+        taxa = 0.01;
+        if (usuario->saldoxrp < valor) {
+            printf("Saldo insuficiente de XRP!\n");
+            return;
+        }
+        usuario->saldoxrp -= valor;
+        usuario->saldoreal += valor * cotacoes->valorxrp * (1 - taxa);
+        salvatrans(usuario, "Venda de Ripple", valor * cotacoes->valorxrp, valor * cotacoes->valorxrp * taxa);
+        printf("Venda de Ripple realizada! Saldo de XRP: %.2f\n", usuario->saldoxrp);
+    }
+}
+
 void cotacao(Cotacoes *cotacoes) {
     cotacoes->valorbit += cotacoes->valorbit * variacao();
     cotacoes->valoreht += cotacoes->valoreht * variacao();
@@ -251,6 +296,36 @@ void saldo(Usuario *usuario) {
     printf("Saldo em Bitcoin: %.6f BTC\n", usuario->saldobit);
     printf("Saldo em Ethereum: %.6f ETH\n", usuario->saldoeth);
     printf("Saldo em Ripple: %.2f XRP\n", usuario->saldoxrp);
+}
+
+void extrato(Usuario *usuario) {
+    printf("\nExtrato de Transações de %s:\n", usuario->nome);
+    for (int i = 0; i < usuario->quanttrans; i++) {
+        printf("Data: %s | Tipo: %s | Valor: R$ %.2f | Taxa: R$ %.2f\n",
+               usuario->transacoes[i].date,
+               usuario->transacoes[i].tipomov,
+               usuario->transacoes[i].valor,
+               usuario->transacoes[i].taxamov);
+    }
+    salvaextrato(usuario);
+}
+
+void salvaextrato(Usuario *usuario) {
+    char nomeuser[TAM_NOME + 4]; // espaço para .txt
+    sprintf(nomeuser, "%s.txt", usuario->nome);
+    FILE *arquivo = fopen(nomeuser, "w");
+    if (arquivo != NULL) {
+        fprintf(arquivo, "Extrato de Transações de %s:\n", usuario->nome);
+        for (int i = 0; i < usuario->quanttrans; i++) {
+            fprintf(arquivo, "Data: %s | Tipo: %s | Valor: R$ %.2f | Taxa: R$ %.2f\n",
+                    usuario->transacoes[i].date,
+                    usuario->transacoes[i].tipomov,
+                    usuario->transacoes[i].valor,
+                    usuario->transacoes[i].taxamov);
+        }
+        fclose(arquivo);
+        printf("Extrato salvo em %s.\n", nomeuser);
+    }
 }
 
 

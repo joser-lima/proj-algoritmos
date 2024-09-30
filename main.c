@@ -45,6 +45,7 @@ void deposito(Usuario *usuario);
 void compracripto(Usuario *usuario, Cotacoes *cotacoes);
 void vendacripto(Usuario *usuario, Cotacoes *cotacoes);
 void cotacao(Cotacoes *cotacoes);
+void saldo(Usuario *usuario);
 float calctax(float valor, float taxa);
 void hora(char *date);
 void salvauser(Usuario usuarios[], int numusers);
@@ -91,20 +92,20 @@ int main() {
                         deposito(&useratual);
                         salvauser(usuarios, numusers);
                     } else if (respuser == 2) {
-                        // compracripto(&useratual, &cotacoes);
-                        // salvauser(usuarios, numusers); 
+                        compracripto(&useratual, &cotacoes);
+                        salvauser(usuarios, numusers); 
                     } else if (respuser == 3) {
-                        // vendacripto(&useratual, &cotacoes);
-                        // salvauser(usuarios, numusers); 
+                        vendacripto(&useratual, &cotacoes);
+                        salvauser(usuarios, numusers); 
                     } else if (respuser == 4) {
                         // extrato(&useratual);
                     } else if (respuser == 5) {
                         saque(&useratual);
                         salvauser(usuarios, numusers);
                     } else if (respuser == 6) {
-                        // saldo(&useratual);
+                        saldo(&useratual);
                     } else if (respuser == 7) {
-                        // cotacao(&cotacoes);
+                        cotacao(&cotacoes);
                     } else if (respuser == 8) {
                         break;
                     }
@@ -242,6 +243,14 @@ void cotacao(Cotacoes *cotacoes) {
     printf("Bitcoin: R$ %.2f\n", cotacoes->valorbit);
     printf("Ethereum: R$ %.2f\n", cotacoes->valoreht);
     printf("Ripple: R$ %.2f\n", cotacoes->valorxrp);
+}
+
+void saldo(Usuario *usuario) {
+    printf("\nSaldo de %s:\n", usuario->nome);
+    printf("Saldo em Reais: R$ %.2f\n", usuario->saldoreal);
+    printf("Saldo em Bitcoin: %.6f BTC\n", usuario->saldobit);
+    printf("Saldo em Ethereum: %.6f ETH\n", usuario->saldoeth);
+    printf("Saldo em Ripple: %.2f XRP\n", usuario->saldoxrp);
 }
 
 

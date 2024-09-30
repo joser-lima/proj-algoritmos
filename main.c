@@ -43,11 +43,17 @@ int login(Usuario usuarios[], int numusers, Usuario *userlogado);
 void saque(Usuario *usuario);
 void deposito(Usuario *usuario);
 void compracripto(Usuario *usuario, Cotacoes *cotacoes);
+void vendacripto(Usuario *usuario, Cotacoes *cotacoes);
+void cotacao(Cotacoes *cotacoes);
 float calctax(float valor, float taxa);
 void hora(char *date);
 void salvauser(Usuario usuarios[], int numusers);
 void abreuser(Usuario usuarios[], int *numusers);
 void salvatrans(Usuario *usuario, const char *tipomov, float valor, float taxa);
+
+float variacao() {
+    return (rand() % 11 - 5) / 100.0;
+}
 
 
 int main() {
@@ -85,11 +91,11 @@ int main() {
                         deposito(&useratual);
                         salvauser(usuarios, numusers);
                     } else if (respuser == 2) {
-                        compracripto(&useratual, &cotacoes);
-                        salvauser(usuarios, numusers); 
+                        // compracripto(&useratual, &cotacoes);
+                        // salvauser(usuarios, numusers); 
                     } else if (respuser == 3) {
-                        vendacripto(&useratual, &cotacoes);
-                        salvauser(usuarios, numusers); 
+                        // vendacripto(&useratual, &cotacoes);
+                        // salvauser(usuarios, numusers); 
                     } else if (respuser == 4) {
                         // extrato(&useratual);
                     } else if (respuser == 5) {
@@ -228,48 +234,16 @@ void compracripto(Usuario *usuario, Cotacoes *cotacoes) {
     }
 }
 
-void vendacripto(Usuario *usuario, Cotacoes *cotacoes) {
-    int respmoeda;
-    float valor;
-    printf("\n1. Vender Bitcoin\n2. Vender Ethereum\n3. Vender Ripple\nEscolha uma opção: ");
-    scanf("%d", &respmoeda);
-
-    printf("Digite a quantidade a ser vendida: ");
-    scanf("%f", &valor);
-
-    float taxa;
-    if (respmoeda == 1) {
-        taxa = 0.02;
-        if (usuario->saldobit < valor) {
-            printf("Saldo insuficiente de BTC!\n");
-            return;
-        }
-        usuario->saldobit -= valor;
-        usuario->saldoreal += valor * cotacoes->valorbit * (1 - taxa);
-        salvatrans(usuario, "Venda de Bitcoin", valor * cotacoes->valorbit, valor * cotacoes->valorbit * taxa);
-        printf("Venda de Bitcoin realizada! Saldo de BTC: %.6f\n", usuario->saldobit);
-    } else if (respmoeda == 2) {
-        taxa = 0.02;
-        if (usuario->saldoeth < valor) {
-            printf("Saldo insuficiente de ETH!\n");
-            return;
-        }
-        usuario->saldoeth -= valor;
-        usuario->saldoreal += valor * cotacoes->valoreht * (1 - taxa);
-        salvatrans(usuario, "Venda de Ethereum", valor * cotacoes->valoreht, valor * cotacoes->valoreht * taxa);
-        printf("Venda de Ethereum realizada! Saldo de ETH: %.6f\n", usuario->saldoeth);
-    } else if (respmoeda == 3) {
-        taxa = 0.01;
-        if (usuario->saldoxrp < valor) {
-            printf("Saldo insuficiente de XRP!\n");
-            return;
-        }
-        usuario->saldoxrp -= valor;
-        usuario->saldoreal += valor * cotacoes->valorxrp * (1 - taxa);
-        salvatrans(usuario, "Venda de Ripple", valor * cotacoes->valorxrp, valor * cotacoes->valorxrp * taxa);
-        printf("Venda de Ripple realizada! Saldo de XRP: %.2f\n", usuario->saldoxrp);
-    }
+void cotacao(Cotacoes *cotacoes) {
+    cotacoes->valorbit += cotacoes->valorbit * variacao();
+    cotacoes->valoreht += cotacoes->valoreht * variacao();
+    cotacoes->valorxrp += cotacoes->valorxrp * variacao();
+    printf("Cotações atualizadas:\n");
+    printf("Bitcoin: R$ %.2f\n", cotacoes->valorbit);
+    printf("Ethereum: R$ %.2f\n", cotacoes->valoreht);
+    printf("Ripple: R$ %.2f\n", cotacoes->valorxrp);
 }
+
 
 float calctax(float valor, float taxa) {
     return valor * taxa;

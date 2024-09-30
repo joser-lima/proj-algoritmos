@@ -40,8 +40,13 @@ typedef struct {
 
 void cadastro(Usuario usuarios[], int *numusers);
 int login(Usuario usuarios[], int numusers, Usuario *userlogado);
+void saque(Usuario *usuario);
+void deposito(Usuario *usuario);
+void hora(char *date);
 void salvauser(Usuario usuarios[], int numusers);
 void abreuser(Usuario usuarios[], int *numusers);
+void salvatrans(Usuario *usuario, const char *tipomov, float valor, float taxa);
+
 
 int main() {
     Usuario usuarios[MAX_USUARIOS];
@@ -75,8 +80,8 @@ int main() {
                     scanf("%d", &respuser);
 
                     if (respuser == 1) {
-                        // deposito(&useratual);
-                        // salvauser(usuarios, numusers);
+                        deposito(&useratual);
+                        salvauser(usuarios, numusers);
                     } else if (respuser == 2) {
                         // compracripto(&useratual, &cotacoes);
                         // salvauser(usuarios, numusers); 
@@ -86,8 +91,8 @@ int main() {
                     } else if (respuser == 4) {
                         // extrato(&useratual);
                     } else if (respuser == 5) {
-                        // saque(&useratual);
-                        // salvauser(usuarios, numusers);
+                        saque(&useratual);
+                        salvauser(usuarios, numusers);
                     } else if (respuser == 6) {
                         // saldo(&useratual);
                     } else if (respuser == 7) {
@@ -156,6 +161,30 @@ int login(Usuario usuarios[], int numusers, Usuario *userlogado) {
     return 0;
 }
 
+void saque(Usuario *usuario) {
+    float valor;
+    printf("Digite o valor que deseja sacar: ");
+    scanf("%f", &valor);
+
+    if (usuario->saldoreal < valor) {
+        printf("Saldo insuficiente!\n");
+        return;
+    }
+
+    usuario->saldoreal -= valor;
+    salvatrans(usuario, "Saque", valor, 0);
+    printf("Saque realizado com sucesso! Saldo atual: R$ %.2f\n", usuario->saldoreal);
+}
+
+void deposito(Usuario *usuario) {
+    float valor;
+    printf("Digite o valor que deseja depositar: ");
+    scanf("%f", &valor);
+    usuario->saldoreal += valor;
+    salvatrans(usuario, "Depósito", valor, 0);
+    printf("Depósito realizado com sucesso! Saldo atual: R$ %.2f\n", usuario->saldoreal);
+}
+
 void salvauser(Usuario usuarios[], int numusers) {
     FILE *arquivo = fopen("usuarios.bin", "wb");
     fwrite(usuarios, sizeof(Usuario), numusers, arquivo);
@@ -170,4 +199,22 @@ void abreuser(Usuario usuarios[], int *numusers) {
         fclose(arquivo);
         printf("Dados dos usuários carregados com sucesso. Total de usuários: %d\n", *numusers);
     }
+}
+
+void salvatrans(Usuario *usuario, const char *tipomov, float valor, float taxa) {
+    if (usuario->quanttrans < MAX_TRANSACOES) {
+        Transacao transacatual;
+        hora(transacatual.date);
+        strcpy(transacatual.tipomov, tipomov);
+        transacatual.valor = valor;
+        transacatual.taxamov = taxa;
+
+        usuario->transacoes[usuario->quanttrans] = transacatual;
+        usuario->quanttrans++;
+    }
+}
+
+void hora(char *date) {
+    time_t agora = time(NULL);
+    strftime(date, 30, "%Y-%m-%d %H:%M:%S", localtime(&agora));
 }

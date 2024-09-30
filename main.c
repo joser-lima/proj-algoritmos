@@ -9,13 +9,14 @@
 #define TAM_CPF 12
 #define TAM_SENHA 7
 
-
+//struct das criptomoedas
 typedef struct {
     float valorbit;
     float valoreht;
     float valorxrp;
 } Cotacoes;
 
+//struct de cada transacao
 typedef struct {
     char date[30];
     char tipomov[30];
@@ -23,6 +24,7 @@ typedef struct {
     float taxamov;
 } Transacao;
 
+//struct de cada usuario
 typedef struct {
     char nome[TAM_NOME];
     char cpf[TAM_CPF];
@@ -38,6 +40,8 @@ typedef struct {
 
 void cadastro(Usuario usuarios[], int *numusers);
 int login(Usuario usuarios[], int numusers, Usuario *userlogado);
+void salvauser(Usuario usuarios[], int numusers);
+void abreuser(Usuario usuarios[], int *numusers);
 
 int main() {
     Usuario usuarios[MAX_USUARIOS];
@@ -150,4 +154,20 @@ int login(Usuario usuarios[], int numusers, Usuario *userlogado) {
         }
     }
     return 0;
+}
+
+void salvauser(Usuario usuarios[], int numusers) {
+    FILE *arquivo = fopen("usuarios.bin", "wb");
+    fwrite(usuarios, sizeof(Usuario), numusers, arquivo);
+    fclose(arquivo);
+    printf("Dados dos usuários salvos com sucesso.\n");
+}
+
+void abreuser(Usuario usuarios[], int *numusers) {
+    FILE *arquivo = fopen("usuarios.bin", "rb");
+    if (arquivo != NULL) {
+        *numusers = fread(usuarios, sizeof(Usuario), MAX_USUARIOS, arquivo);
+        fclose(arquivo);
+        printf("Dados dos usuários carregados com sucesso. Total de usuários: %d\n", *numusers);
+    }
 }

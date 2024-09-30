@@ -42,6 +42,8 @@ void cadastro(Usuario usuarios[], int *numusers);
 int login(Usuario usuarios[], int numusers, Usuario *userlogado);
 void saque(Usuario *usuario);
 void deposito(Usuario *usuario);
+void compracripto(Usuario *usuario, Cotacoes *cotacoes);
+float calctax(float valor, float taxa);
 void hora(char *date);
 void salvauser(Usuario usuarios[], int numusers);
 void abreuser(Usuario usuarios[], int *numusers);
@@ -183,6 +185,51 @@ void deposito(Usuario *usuario) {
     usuario->saldoreal += valor;
     salvatrans(usuario, "Depósito", valor, 0);
     printf("Depósito realizado com sucesso! Saldo atual: R$ %.2f\n", usuario->saldoreal);
+}
+
+void compracripto(Usuario *usuario, Cotacoes *cotacoes) {
+    int respmoeda;
+    float valor;
+    printf("\n1. Comprar Bitcoin\n2. Comprar Ethereum\n3. Comprar Ripple\nEscolha uma opção: ");
+    scanf("%d", &respmoeda);
+
+    printf("Digite o valor da compra: ");
+    scanf("%f", &valor);
+
+    float taxa;
+    if (respmoeda == 1) {
+        taxa = 0.02;
+    } else if (respmoeda == 2) {
+        taxa = 0.01;
+    } else {
+        taxa = 0.01;
+    }
+
+    float valortaxa = calctax(valor, taxa);
+    if (usuario->saldoreal < valortaxa) {
+        printf("Saldo insuficiente para cobrir a taxa!\n");
+        return;
+    }
+
+    usuario->saldoreal -= valortaxa;
+
+    if (respmoeda == 1) {
+        usuario->saldobit += valor / cotacoes->valorbit;
+        salvatrans(usuario, "Compra de Bitcoin", valor, valortaxa);
+        printf("Compra de Bitcoin realizada! Saldo de BTC: %.6f\n", usuario->saldobit);
+    } else if (respmoeda == 2) {
+        usuario->saldoeth += valor / cotacoes->valoreht;
+        salvatrans(usuario, "Compra de Ethereum", valor, valortaxa);
+        printf("Compra de Ethereum realizada! Saldo de ETH: %.6f\n", usuario->saldoeth);
+    } else if (respmoeda == 3) {
+        usuario->saldoxrp += valor / cotacoes->valorxrp;
+        salvatrans(usuario, "Compra de Ripple", valor, valortaxa);
+        printf("Compra de Ripple realizada! Saldo de XRP: %.2f\n", usuario->saldoxrp);
+    }
+}
+
+float calctax(float valor, float taxa) {
+    return valor * taxa;
 }
 
 void salvauser(Usuario usuarios[], int numusers) {

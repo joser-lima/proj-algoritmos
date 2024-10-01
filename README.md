@@ -5,7 +5,7 @@
 ### Permitir ao usuário comprar, vender e consultar cotações das criptomoedas: Bitcoin, Ethereum e ripple. Além de cadastrar, logar, adicionar e sacar fundos à carteira e acessar o saldo e o extrato de sua conta.
 
 ## Formas de compilação
-### Para compilar e executar o código,o usuário deve:
+### Para compilar e executar o código, o usuário deve:
 1. Acessar o terminal de sua máquina
 2. Digitar gcc main.c para compilar o programa
 3. Executar .\a.exe

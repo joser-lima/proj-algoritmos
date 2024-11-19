@@ -59,7 +59,7 @@ int main() {
         if (opcaoAdmin == 1) {
             adicionarUsuario(usuarios, &numusers);
         } else if (opcaoAdmin == 2) {
-            //exclui user
+            excluirUsuario(usuarios, &numusers);
         } else if (opcaoAdmin == 3) {
             //cadastra cripto
         } else if (opcaoAdmin == 4) {

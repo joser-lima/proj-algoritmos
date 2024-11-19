@@ -31,3 +31,43 @@ void adicionarUsuario(Usuario usuarios[], int *numusers) {
 
     printf("Novo usuário adicionado com sucesso!\n");
 }
+
+void excluirUsuario(Usuario usuarios[], int *numusers) {
+    if (*numusers == 0) {
+        printf("Não há usuários cadastrados para excluir.\n");
+        return;
+    }
+
+    char cpf[TAM_CPF];
+    printf("Digite o CPF do usuário a ser excluído: ");
+    scanf("%s", cpf);
+
+    int encontrado = -1;
+    for (int i = 0; i < *numusers; i++) {
+        if (strcmp(usuarios[i].cpf, cpf) == 0) {
+            encontrado = i;
+            break;
+        }
+    }
+
+    if (encontrado == -1) {
+        printf("Usuário com CPF %s não encontrado.\n", cpf);
+        return;
+    }
+
+    printf("Tem certeza que deseja excluir o usuário %s (CPF: %s)? (s/n): ", usuarios[encontrado].nome, usuarios[encontrado].cpf);
+    char confirmacao;
+    scanf(" %c", &confirmacao);
+
+    if (confirmacao == 's' || confirmacao == 'S') {
+        for (int i = encontrado; i < *numusers - 1; i++) {
+            usuarios[i] = usuarios[i + 1];
+        }
+
+        (*numusers)--;
+        salvauser(usuarios, *numusers);
+        printf("Usuário com CPF %s excluído com sucesso.\n", cpf);
+    } else {
+        printf("Exclusão cancelada.\n");
+    }
+}

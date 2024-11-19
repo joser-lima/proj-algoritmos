@@ -5,5 +5,6 @@
 
 int loginAdmin();
 void adicionarUsuario(Usuario usuarios[], int *numusers);
+void excluirUsuario(Usuario usuarios[], int *numusers);
 
 #endif

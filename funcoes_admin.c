@@ -139,3 +139,22 @@ void excluirCripto(Criptomoeda criptomoedas[], int *nummoedas) {
         printf("Exclusão cancelada.\n");
     }
 }
+
+void consultarSaldo(Usuario usuarios[], int numusers) {
+    char cpf[TAM_CPF];
+    printf("Digite o CPF do investidor: ");
+    scanf("%s", cpf);
+
+    for (int i = 0; i < numusers; i++) {
+        if (strcmp(usuarios[i].cpf, cpf) == 0) {
+            printf("Saldo do investidor %s (%s):\n", usuarios[i].nome, usuarios[i].cpf);
+            printf("Saldo em Reais: R$ %.2f\n", usuarios[i].saldoreal);
+            printf("Saldo em Bitcoin: %.6f BTC\n", usuarios[i].saldobit);
+            printf("Saldo em Ethereum: %.6f ETH\n", usuarios[i].saldoeth);
+            printf("Saldo em Ripple: %.2f XRP\n", usuarios[i].saldoxrp);
+            return;
+        }
+    }
+
+    printf("Investidor com CPF %s não encontrado.\n", cpf);
+}

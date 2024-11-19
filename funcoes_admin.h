@@ -8,5 +8,6 @@ void adicionarUsuario(Usuario usuarios[], int *numusers);
 void excluirUsuario(Usuario usuarios[], int *numusers);
 void cadastrarCripto(Criptomoeda criptomoedas[], int *nummoedas);
 void excluirCripto(Criptomoeda criptomoedas[], int *nummoedas);
+void consultarSaldo(Usuario usuarios[], int numusers);
 
 #endif

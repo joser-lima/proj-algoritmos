@@ -65,7 +65,7 @@ int main() {
         } else if (opcaoAdmin == 4) {
             excluirCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 5) {
-            //consulta saldo
+            consultarSaldo(usuarios, numusers);
         } else if (opcaoAdmin == 6) {
             //consulta extrato
         } else if (opcaoAdmin == 7) {

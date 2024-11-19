@@ -59,17 +59,18 @@ int main() {
         if (opcaoAdmin == 1) {
             adicionarUsuario(usuarios, &numusers);
         } else if (opcaoAdmin == 2) {
-            //exclui user
+            excluirUsuario(usuarios, &numusers);
         } else if (opcaoAdmin == 3) {
-            //cadastra cripto
+            cadastrarCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 4) {
-            //exclui cripto
+            excluirCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 5) {
-            //consulta saldo
+            consultarSaldo(usuarios, numusers);
         } else if (opcaoAdmin == 6) {
-            //consulta extrato
+            consultarExtrato(usuarios, numusers);
         } else if (opcaoAdmin == 7) {
-            //cotacao
+            cotacao(criptomoedas, nummoedas);
+            salvacriptos(criptomoedas, nummoedas);
         } else if (opcaoAdmin == 8) {
             printf("Saindo...\n");
             salvauser(usuarios, numusers);

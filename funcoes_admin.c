@@ -158,3 +158,25 @@ void consultarSaldo(Usuario usuarios[], int numusers) {
 
     printf("Investidor com CPF %s não encontrado.\n", cpf);
 }
+
+void consultarExtrato(Usuario usuarios[], int numusers) {
+    char cpf[TAM_CPF];
+    printf("Digite o CPF do investidor: ");
+    scanf("%s", cpf);
+
+    for (int i = 0; i < numusers; i++) {
+        if (strcmp(usuarios[i].cpf, cpf) == 0) {
+            printf("=== Extrato do Investidor %s (%s) ===\n", usuarios[i].nome, usuarios[i].cpf);
+            for (int j = 0; j < usuarios[i].quanttrans; j++) {
+                printf("Data: %s | Tipo: %s | Valor: R$ %.2f | Taxa: R$ %.2f\n",
+                       usuarios[i].transacoes[j].date,
+                       usuarios[i].transacoes[j].tipomov,
+                       usuarios[i].transacoes[j].valor,
+                       usuarios[i].transacoes[j].taxamov);
+            }
+            return;
+        }
+    }
+
+    printf("Investidor com CPF %s não encontrado.\n", cpf);
+}

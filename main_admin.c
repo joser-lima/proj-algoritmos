@@ -67,7 +67,7 @@ int main() {
         } else if (opcaoAdmin == 5) {
             consultarSaldo(usuarios, numusers);
         } else if (opcaoAdmin == 6) {
-            //consulta extrato
+            consultarExtrato(usuarios, numusers);
         } else if (opcaoAdmin == 7) {
             //cotacao
         } else if (opcaoAdmin == 8) {

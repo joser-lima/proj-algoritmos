@@ -61,7 +61,7 @@ int main() {
         } else if (opcaoAdmin == 2) {
             excluirUsuario(usuarios, &numusers);
         } else if (opcaoAdmin == 3) {
-            //cadastra cripto
+            cadastrarCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 4) {
             //exclui cripto
         } else if (opcaoAdmin == 5) {

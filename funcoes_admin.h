@@ -7,5 +7,6 @@ int loginAdmin();
 void adicionarUsuario(Usuario usuarios[], int *numusers);
 void excluirUsuario(Usuario usuarios[], int *numusers);
 void cadastrarCripto(Criptomoeda criptomoedas[], int *nummoedas);
+void excluirCripto(Criptomoeda criptomoedas[], int *nummoedas);
 
 #endif

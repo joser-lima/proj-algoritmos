@@ -94,3 +94,48 @@ void cadastrarCripto(Criptomoeda criptomoedas[], int *nummoedas) {
 
     printf("Criptomoeda %s cadastrada com sucesso!\n", novaCripto.nome);
 }
+
+void excluirCripto(Criptomoeda criptomoedas[], int *nummoedas) {
+    if (*nummoedas == 0) {
+        printf("Não há criptomoedas cadastradas para excluir.\n");
+        return;
+    }
+
+    char nome[50];
+    printf("Digite o nome da criptomoeda a ser excluída: ");
+    scanf(" %[^\n]", nome);
+
+    int encontrado = -1;
+    for (int i = 0; i < *nummoedas; i++) {
+        if (strcmp(criptomoedas[i].nome, nome) == 0) {
+            encontrado = i;
+            break;
+        }
+    }
+
+    if (encontrado == -1) {
+        printf("Criptomoeda %s não encontrada.\n", nome);
+        return;
+    }
+
+    printf("Detalhes da criptomoeda:\n");
+    printf("Nome: %s\n", criptomoedas[encontrado].nome);
+    printf("Cotação: %.2f\n", criptomoedas[encontrado].cotacao);
+    printf("Taxa de Compra: %.2f%%\n", criptomoedas[encontrado].taxaCompra);
+    printf("Taxa de Venda: %.2f%%\n", criptomoedas[encontrado].taxaVenda);
+
+    printf("Tem certeza que deseja excluir esta criptomoeda? (s/n): ");
+    char confirmacao;
+    scanf(" %c", &confirmacao);
+
+    if (confirmacao == 's' || confirmacao == 'S') {
+        for (int i = encontrado; i < *nummoedas - 1; i++) {
+            criptomoedas[i] = criptomoedas[i + 1];
+        }
+        (*nummoedas)--;
+        salvacriptos(criptomoedas, *nummoedas);
+        printf("Criptomoeda %s excluída com sucesso.\n", nome);
+    } else {
+        printf("Exclusão cancelada.\n");
+    }
+}

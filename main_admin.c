@@ -63,7 +63,7 @@ int main() {
         } else if (opcaoAdmin == 3) {
             cadastrarCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 4) {
-            //exclui cripto
+            excluirCripto(criptomoedas, &nummoedas);
         } else if (opcaoAdmin == 5) {
             //consulta saldo
         } else if (opcaoAdmin == 6) {

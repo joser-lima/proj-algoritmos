@@ -69,7 +69,8 @@ int main() {
         } else if (opcaoAdmin == 6) {
             consultarExtrato(usuarios, numusers);
         } else if (opcaoAdmin == 7) {
-            //cotacao
+            cotacao(criptomoedas, nummoedas);
+            salvacriptos(criptomoedas, nummoedas);
         } else if (opcaoAdmin == 8) {
             printf("Saindo...\n");
             salvauser(usuarios, numusers);
